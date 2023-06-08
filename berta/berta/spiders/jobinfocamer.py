@@ -34,14 +34,16 @@ class JobinfocamerSpider(scrapy.Spider):
     def parse_job_page(self, response):
         job = response.css(".home-detail-job")[0]
         table_rows = response.css("table tr")
-        yield {
-            'title' :job.css(".headline h2::text").get(),
-            # 'jobDetails': ,
-            # 'description': job.css(".job-description p:nth-child(2) ::text").get(),
-            'employer': job.css(".detail-job tr:nth-child(1) td+ td ::text").get() ,
-            'type':job.css(".search-block , .detail-job tr:nth-child(3) td:nth-child(1) ::text").get(),
-            'location': job.css(".detail-job tr:nth-child(2) td:nth-child(1) ::text").get(),
-            'publishedDate': job.css(".detail-job tr:nth-child(1) td:nth-child(1) ::text").get(),
-            'expirationDate': job.css(".detail-job tr:nth-child(4) td:nth-child(1) ::text").get(),
-            'applyLink': job.css(".job-description a").attrib['href']
-        }
+        title = job.css(".headline h2::text").get()
+        if 'dev' in title.lower():
+            yield {
+                'title' :job.css(".headline h2::text").get(),
+                # 'jobDetails': ,
+                # 'description': job.css(".job-description p:nth-child(2) ::text").get(),
+                'employer': job.css(".detail-job tr:nth-child(1) td+ td ::text").get() ,
+                'type':job.css(".search-block , .detail-job tr:nth-child(3) td:nth-child(1) ::text").get(),
+                'location': job.css(".detail-job tr:nth-child(2) td:nth-child(1) ::text").get(),
+                'publishedDate': job.css(".detail-job tr:nth-child(1) td:nth-child(1) ::text").get(),
+                'expirationDate': job.css(".detail-job tr:nth-child(4) td:nth-child(1) ::text").get(),
+                'applyLink': job.css(".job-description a").attrib['href']
+            }
