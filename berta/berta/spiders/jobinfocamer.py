@@ -8,7 +8,7 @@ class JobinfocamerSpider(scrapy.Spider):
     allowed_domains = ["www.jobinfocamer.com"]
     start_urls = ["https://www.jobinfocamer.com/jobs/Informatique/"]
     custom_settings = {
-        'FEEDS': { 'jobinfo2.json': { 'format': 'json', 'overwrite':True}}
+        'FEEDS': { 'data/jobinfo2.json': { 'format': 'json', 'overwrite':True}}
         }
 
     def parse(self, response):
