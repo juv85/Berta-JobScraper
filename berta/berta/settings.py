@@ -7,6 +7,9 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+from shutil import which
+
+
 BOT_NAME = "berta"
 
 SPIDER_MODULES = ["berta.spiders"]
@@ -25,7 +28,7 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 3
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -92,10 +95,13 @@ REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
+# from selenium.webdriver.firefox.options import Options
 
-## settings.py
+# SELENIUM_DRIVER_NAME = 'firefox'
+# SELENIUM_DRIVER_EXECUTABLE_PATH = '../geckodriver.exe'
+# SELENIUM_DRIVER_ARGUMENTS=['--headless']  
 
-SCRAPEOPS_API_KEY = '32f57161-d326-43b3-9d97-8c22672ded2a'
+SCRAPEOPS_API_KEY = '564f4f6f-f196-40d0-a2da-7b38cab21615'
 SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True
 SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = True
 
@@ -109,7 +115,7 @@ SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = True
 DOWNLOADER_MIDDLEWARES = {
     'berta.middlewares.BertaFakeUserAgentMiddleware': 400,
     'berta.middlewares.BertaFakeBrowserHeaderAgentMiddleware': 400,
-    # 'berta.middlewares.MyProxyMiddleware': 350, 
+    # 'scrapy_selenium.SeleniumMiddleware': 800, 
 }
 
 ITEM_PIPELINES = {

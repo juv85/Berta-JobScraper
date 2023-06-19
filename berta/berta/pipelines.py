@@ -13,6 +13,14 @@ import psycopg2
 
 class BertaPipeline:
     def process_item(self, item, spider):
+        adapter=ItemAdapter(item)
+        
+        field_names = adapter.field_names()
+        # for field_name in field_names:
+        #     if field_name != 
+        
+        
+        
         return item
     
     
