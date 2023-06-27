@@ -5,23 +5,35 @@
 
 
 # useful for handling different item types with a single interface
+import re
 from itemadapter import ItemAdapter
 import psycopg2
 
 
 
-
+def clean_text(entry):
+                res = re.sub(r'.*: ', '', entry)
+                return res
+            
 class BertaPipeline:
+    
+                
     def process_item(self, item, spider):
-        adapter=ItemAdapter(item)
+        for key in item:
+            item[key] = clean_text(item[key])
+        return item    
+            
+    # def process_item(self, item, spider):
+    #     adapter=ItemAdapter(item)
         
-        field_names = adapter.field_names()
-        # for field_name in field_names:
-        #     if field_name != 
+    #     field_names = adapter.field_names()
+    #     for field_name in field_names:
+    #         value = adapter.get(field_name)
+    #         adapter[field_name] = self.clean_text(value)
         
         
         
-        return item
+    #     return item
     
     
 class BookscraperPipeline:

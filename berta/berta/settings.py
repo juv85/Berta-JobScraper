@@ -120,5 +120,5 @@ DOWNLOADER_MIDDLEWARES = {
 
 ITEM_PIPELINES = {
 #    'berta.pipelines.BookscraperPipeline': 300,
-#    'berta.pipelines.SaveToPostgresPipeline': 300,
+   'berta.pipelines.BertaPipeline': 300,
 }
