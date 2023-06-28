@@ -8,10 +8,15 @@ import scrapy
 
 class JobItem(scrapy.Item):
     title = scrapy.Field()
+    employer = scrapy.Field()
     description = scrapy.Field()
     date = scrapy.Field()
     location = scrapy.Field()
-
+    expirationDate = scrapy.Field()
+    publishedDate = scrapy.Field()
+    applyLink = scrapy.Field()
+    
+    
 class BookItem(scrapy.Item):
     url = scrapy.Field()
     title = scrapy.Field()

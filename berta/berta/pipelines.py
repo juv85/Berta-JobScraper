@@ -19,9 +19,9 @@ class BertaPipeline:
     
                 
     def process_item(self, item, spider):
-        for key in item:
-            item[key] = clean_text(item[key])
-        return item    
+        # for key in item:
+        #     item[key] = clean_text(item[key])
+        # return item    
             
     # def process_item(self, item, spider):
     #     adapter=ItemAdapter(item)
@@ -31,7 +31,46 @@ class BertaPipeline:
     #         value = adapter.get(field_name)
     #         adapter[field_name] = self.clean_text(value)
         
-        
+        # item['title'] = self.clean_title(item['title'])
+        item['description'] = self.clean_description(item['description'])
+        item['employer'] = clean_text(item['employer'])
+        item['type'] = clean_text(item['type'])
+        item['location'] = clean_text(item['location'])
+        item['publishedDate'] = clean_text(item['publishedDate'])
+        item['expirationDate'] = clean_text(item['expirationDate'])
+        # item['applyLink'] = clean_text(item['applyLink'])
+        return item
+
+    def clean_title(self, title):
+        # Clean the job title attribute
+        return title.strip()
+
+    def clean_description(self, description):
+        # Clean the job description attribute
+        return description.strip()
+
+    def clean_employer(self, employer):
+        # Clean the employer attribute
+        return employer.strip()
+
+    def clean_job_type(self, job_type):
+        # Clean the job type attribute
+        return job_type.strip()
+
+    def clean_location(self, location):
+        # Clean the job location attribute
+        return location.strip()
+
+    def clean_date(self, date_str):
+        # Clean the date attributes
+        if date_str:
+            date_str = date_str.strip()
+            # Apply any necessary date cleaning operations here
+        return date_str
+
+    def clean_apply_link(self, apply_link):
+        # Clean the apply link attribute
+        return apply_link.strip()
         
     #     return item
     

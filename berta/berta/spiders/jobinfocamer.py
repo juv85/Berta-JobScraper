@@ -19,7 +19,7 @@ class JobinfocamerSpider(scrapy.Spider):
     allowed_domains = ["www.jobinfocamer.com"]
     start_urls = ["https://www.jobinfocamer.com/"]
     custom_settings = {
-        'FEEDS': { 'data/jobinfo2.json': { 'format': 'json'}}
+        'FEEDS': { 'data/jobinfo2.json': { 'format': 'json', 'overwrite':True}}
         }
     
     
