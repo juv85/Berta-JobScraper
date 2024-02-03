@@ -3,6 +3,7 @@ import scrapy
 from berta.items import JobItem
 
 import translate
+# from googletrans import Translator
 
 from scrapy.spidermiddlewares.httperror import HttpError
 from twisted.internet.error import DNSLookupError, ConnectionRefusedError, TimeoutError
@@ -19,14 +20,13 @@ class JobinfocamerSpider(scrapy.Spider):
     allowed_domains = ["www.jobinfocamer.com"]
     start_urls = ["https://www.jobinfocamer.com/"]
     custom_settings = {
-        'FEEDS': { 'data/jobinfo2.json': { 'format': 'json', 'overwrite':True}}
+        'FEEDS': { 'data/jobinfo v2.csv': { 'format': 'csv', 'overwrite':False}}
         }
     
     
-
     def parse(self, response):
         
-        search_query = 'developer, yaounde' # enter your search query here
+        search_query = 'engineering' # enter your search query here
         yield scrapy.FormRequest.from_response(
             response,
             formdata={'job-search': search_query},
@@ -46,12 +46,13 @@ class JobinfocamerSpider(scrapy.Spider):
             yield scrapy.Request(job_url, callback=self.parse_job_page)
             # yield SeleniumRequest(url=job_url, callback=self.parse)
         
-        # next_page = response.css('.pagination li:nth-child(6) a ::attr(href)').get()
-        # next_page_url = 'https://www.jobinfocamer.com' + next_page
-        # yield response.follow(next_page_url, callback=self.parse)
+        next_page = response.css('.pagination li:nth-child(6) a ::attr(href)').get()
+        next_page_url = 'https://www.jobinfocamer.com' + next_page
+        yield response.follow(next_page_url, callback=self.parse)
         
     def parse_job_page(self, response):
-        translator = translate.Translator(to_lang='en')
+        translator = translate.Translator(from_lang='fr', to_lang='en')
+        # translator = Translator(service_urls=['translate.google.com', 'translate.google.cm'])
         
         job = response.css(".home-detail-job")[0]
         # table_rows = response.css("table tr")
@@ -63,6 +64,7 @@ class JobinfocamerSpider(scrapy.Spider):
         
         job_description = job_description.replace('\r\n', '<br>')
         job_description = job_description.replace('\n', '<br>')
+        job_description = job_description.replace('\t', '<br>')
         
         employer = job.css(".detail-job tr:nth-child(1) td+ td ::text").get()
         job_type = job.css(".search-block , .detail-job tr:nth-child(3) td:nth-child(1) ::text").get()
@@ -72,14 +74,18 @@ class JobinfocamerSpider(scrapy.Spider):
         apply_link = job.css(".job-description a").attrib['href']
         
         job_name_en = translator.translate(job_name)
-        job_description_en = translator.translate(job_description)
+        # chunks = [job_description[i:i+500] for i in range(0, len(job_description), 500)]
+        # job_description_en = translator.translate(job_description, dest='en')
+        # for chunk in chunks:
+        #     job_description_en = translator.translate(chunk) + ' '
         # employer_en = translator.translate(employer)
         job_type_en = translator.translate(job_type)
         
         yield {
             'title' : job_name_en,
             # 'jobDetails': ,
-            'description': job_description_en,
+            # 'description': job_description_en.strip(),
+            'description': job_description,
             'employer': employer,
             'type': job_type_en,
             'location': job_location,

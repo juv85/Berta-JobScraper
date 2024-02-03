@@ -12,12 +12,12 @@ import psycopg2
 
 
 def clean_text(entry):
-                res = re.sub(r'.*: ', '', entry)
-                return res
+    res = re.sub(r'.*: ', '', entry)
+    return res
             
 class BertaPipeline:
     
-                
+    
     def process_item(self, item, spider):
         # for key in item:
         #     item[key] = clean_text(item[key])
